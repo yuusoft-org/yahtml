@@ -1,13 +1,13 @@
 /**
- * CommonJS wrapper for yhtml
- * @module yhtml
+ * CommonJS wrapper for yahtml
+ * @module yahtml
  */
 
-const importPromise = import('./src/yhtml.js');
+const importPromise = import('./src/yahtml.js');
 
 module.exports = {
   convertToHtml: (...args) => {
-    throw new Error('yhtml requires async initialization in CommonJS. Use: const yhtml = await require("yhtml")');
+    throw new Error('yahtml requires async initialization in CommonJS. Use: const yahtml = await require("yahtml")');
   },
   SELF_CLOSING_TAGS: []
 };

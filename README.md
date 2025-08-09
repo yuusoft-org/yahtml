@@ -1,12 +1,12 @@
-# YHTML Documentation
+# YAHTML Documentation
 
-## What is YHTML?
+## What is YAHTML?
 
-YHTML (YAML HTML) lets you write HTML as valid YAML. It's more concise than HTML while maintaining full expressiveness. Since it's valid YAML, you get structured data that can be parsed as YAML/JSON.
+YAHTML (YAML HTML) lets you write HTML as valid YAML. It's more concise than HTML while maintaining full expressiveness. Since it's valid YAML, you get structured data that can be parsed as YAML/JSON.
 
 ## Quick Example
 
-**YHTML - Clean and concise:**
+**YAHTML - Clean and concise:**
 ```yaml
 - div#home:
   - div.header:
@@ -29,9 +29,9 @@ YHTML (YAML HTML) lets you write HTML as valid YAML. It's more concise than HTML
 
 ## Philosophy & Motivation
 
-### Why YHTML?
+### Why YAHTML?
 
-HTML, while powerful and ubiquitous, has several pain points that YHTML addresses:
+HTML, while powerful and ubiquitous, has several pain points that YAHTML addresses:
 
 **1. Visual Noise**
 HTML's angle brackets, closing tags, and attribute syntax create visual clutter that obscures the actual content structure.
@@ -45,9 +45,9 @@ Every opening tag requires a corresponding closing tag, doubling the markup for 
 **3. Poor Structure Visibility**
 In complex HTML documents, it's difficult to see the hierarchical structure at a glance. Indentation helps but isn't enforced, and closing tags add noise.
 
-### The YHTML Solution
+### The YAHTML Solution
 
-YHTML leverages YAML's natural strengths to create a more elegant markup language:
+YAHTML leverages YAML's natural strengths to create a more elegant markup language:
 
 **1. Structure Through Indentation**
 The hierarchy is immediately visible through enforced indentation.
@@ -60,7 +60,7 @@ The hierarchy is immediately visible through enforced indentation.
 **3. Less Visual Noise**
 By removing angle brackets and closing tags, the content and structure become the focus:
 ```yaml
-# YHTML
+# YAHTML
 - nav.primary-nav:
   - a href="/home": "Home"
   - a href="/about": "About"
@@ -78,26 +78,26 @@ vs
 
 ### Key Features
 
-1. **100% Valid YAML**: Every YHTML document is syntactically valid YAML
+1. **100% Valid YAML**: Every YAHTML document is syntactically valid YAML
 2. **HTML Complete**: Can express any HTML structure or element
 3. **Syntactic Conveniences**: Streamlined notation for IDs (#), classes (.), and optional quotes for single-word attributes
 
 ### Trade-offs and Limitations
 
-YHTML makes conscious trade-offs:
+YAHTML makes conscious trade-offs:
 
 **Limitations:**
 1. **Line Length**: Complex elements with many attributes can create long lines
    ```yaml
    - div class="card featured" id="main-card" data-category="premium" style="transform: rotate(45deg); position: relative;": "Content"
    ```
-If you have a lot of long attributes and attribute values, YHTML won't really make sense for you.
+If you have a lot of long attributes and attribute values, YAHTML won't really make sense for you.
 
 ## Document Structure
 
 ### Arrays All the Way Down
 
-In YHTML, **everything is always an array**, starting from the root. This consistent structure ensures predictable parsing and allows any element to have children.
+In YAHTML, **everything is always an array**, starting from the root. This consistent structure ensures predictable parsing and allows any element to have children.
 
 ```yaml
 - element-declaration
@@ -154,7 +154,7 @@ The notation:
 
 ## Attributes
 
-YHTML uses standard HTML attributes. Quotes are optional for attribute values without spaces:
+YAHTML uses standard HTML attributes. Quotes are optional for attribute values without spaces:
 
 ```yaml
 - div class=container id=main:  # No quotes needed for single words
@@ -181,31 +181,31 @@ Use consistent 2-space indentation throughout the document to keep it concise.
 
 ## Why Not HAML or Pug?
 
-The main difference is that YHTML document is 100% valid YAML, allowing it to leverage existing YAML tooling and integrate seamlessly with YAML-based configurations. Anything that can read a JSON can read a YHTML, no need for special purpose parser.
+The main difference is that YAHTML document is 100% valid YAML, allowing it to leverage existing YAML tooling and integrate seamlessly with YAML-based configurations. Anything that can read a JSON can read a YAHTML, no need for special purpose parser.
 
 ## JavaScript/TypeScript Usage
 
 ### Installation
 
 ```bash
-npm install yhtml
+npm install yahtml
 ```
 
 Or with Bun:
 ```bash
-bun add yhtml
+bun add yahtml
 ```
 
 ### Quick Example
 
 ```javascript
-import { convertToHtml } from 'yhtml';
+import { convertToHtml } from 'yahtml';
 
 const yhtmlContent = [
   {
     'div#app.container': [
       'h1: "My Page"',
-      'p: "Welcome to YHTML!"',
+      'p: "Welcome to YAHTML!"',
       'button.primary: "Click me"'
     ]
   }
@@ -213,17 +213,17 @@ const yhtmlContent = [
 
 const html = convertToHtml(yhtmlContent);
 console.log(html);
-// Output: <div id="app" class="container"><h1>My Page</h1><p>Welcome to YHTML!</p><button class="primary">Click me</button></div>
+// Output: <div id="app" class="container"><h1>My Page</h1><p>Welcome to YAHTML!</p><button class="primary">Click me</button></div>
 ```
 
 ### API Documentation
 
 #### `convertToHtml(yhtmlContent)`
 
-Converts a YHTML array to an HTML string.
+Converts a YAHTML array to an HTML string.
 
 **Parameters:**
-- `yhtmlContent` (Array): The YHTML content as an array
+- `yhtmlContent` (Array): The YAHTML content as an array
 
 **Returns:**
 - (string): The converted HTML string
@@ -237,17 +237,17 @@ Converts a YHTML array to an HTML string.
 An array of HTML5 void elements (self-closing tags).
 
 ```javascript
-import { SELF_CLOSING_TAGS } from 'yhtml';
+import { SELF_CLOSING_TAGS } from 'yahtml';
 console.log(SELF_CLOSING_TAGS);
 // ['br', 'hr', 'img', 'input', 'meta', ...]
 ```
 
 ### TypeScript Support
 
-YHTML includes TypeScript definitions out of the box.
+YAHTML includes TypeScript definitions out of the box.
 
 ```typescript
-import { convertToHtml } from 'yhtml';
+import { convertToHtml } from 'yahtml';
 
 const content = [
   'h1: "Hello TypeScript"'
@@ -258,7 +258,7 @@ const html: string = convertToHtml(content);
 
 ### Performance
 
-YHTML is optimized for performance:
+YAHTML is optimized for performance:
 - **~90,000 ops/sec** for simple elements
 - **~20,000 ops/sec** for real-world pages
 - **~200,000 ops/sec** for HTML escaping

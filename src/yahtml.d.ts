@@ -1,7 +1,7 @@
 /**
- * Convert YHTML array to HTML string
+ * Convert YAHTML array to HTML string
  *
- * @param {Array} yhtmlContent - The YHTML content as an array
+ * @param {Array} yhtmlContent - The YAHTML content as an array
  * @returns {string} The converted HTML string
  * @throws {TypeError} If yhtmlContent is not an array
  * @throws {Error} If element structure is malformed

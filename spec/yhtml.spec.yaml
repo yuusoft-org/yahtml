@@ -1,5 +1,5 @@
-file: '../src/yhtml.js'
-group: yhtml-to-html-converter
+file: '../src/yahtml.js'
+group: yahtml-to-html-converter
 suites: [convertToHtml]
 ---
 suite: convertToHtml
@@ -312,14 +312,14 @@ in:
     - html lang=en:
       - head:
         - meta charset=UTF-8:
-        - 'title: "YHTML Test Page"'
+        - 'title: "YAHTML Test Page"'
         - 'style: "body { font-family: sans-serif; }"'
       - body:
         - div#app.container:
           - header:
-            - 'h1: "Welcome to YHTML"'
+            - 'h1: "Welcome to YAHTML"'
           - main:
             - 'p: "This is a test page."'
           - footer:
             - 'p: "© 2024"'
-out: '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>YHTML Test Page</title><style>body { font-family: sans-serif; }</style></head><body><div id="app" class="container"><header><h1>Welcome to YHTML</h1></header><main><p>This is a test page.</p></main><footer><p>© 2024</p></footer></div></body></html>'
+out: '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>YAHTML Test Page</title><style>body { font-family: sans-serif; }</style></head><body><div id="app" class="container"><header><h1>Welcome to YAHTML</h1></header><main><p>This is a test page.</p></main><footer><p>© 2024</p></footer></div></body></html>'
