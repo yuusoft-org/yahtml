@@ -1,7 +1,7 @@
 {
-  "name": "yhtml",
+  "name": "yahtml",
   "version": "0.0.1",
-  "description": "YHTML (YAML HTML) - Write HTML as valid YAML with clean, concise syntax",
+  "description": "YAHTML (YAML HTML) - Write HTML as valid YAML with clean, concise syntax",
   "keywords": [
     "html",
     "yaml",
@@ -9,17 +9,17 @@
     "templating",
     "markup",
     "converter",
-    "yhtml",
+    "yahtml",
     "html-generator",
     "yaml-to-html"
   ],
-  "homepage": "https://github.com/yuusoft-org/yhtml#readme",
+  "homepage": "https://github.com/yuusoft-org/yahtml#readme",
   "bugs": {
-    "url": "https://github.com/yuusoft-org/yhtml/issues"
+    "url": "https://github.com/yuusoft-org/yahtml/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuusoft-org/yhtml.git"
+    "url": "git+https://github.com/yuusoft-org/yahtml.git"
   },
   "license": "MIT",
   "author": "Yuusoft",

@@ -1,5 +1,5 @@
-file: '../src/yhtml.js'
-group: yhtml-error-handling
+file: '../src/yahtml.js'
+group: yahtml-error-handling
 suites: [convertToHtml]
 ---
 suite: convertToHtml
@@ -9,32 +9,32 @@ exportName: convertToHtml
 case: throws error for string input
 in: 
   - "just a string"
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 case: throws error for number input
 in:
   - 42
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 case: throws error for boolean input
 in:
   - true
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 case: throws error for object input
 in:
   - { div: "content" }
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 case: throws error for null input
 in:
   - null
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 case: throws error for undefined input
 in:
   - undefined
-throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+throws: 'YAHTML content must be an array. YAHTML documents always start with an array at the root level.'
 ---
 # Edge cases that should work (not throw errors)
 case: handles empty array without error
@@ -69,7 +69,7 @@ out: '<div>Hello</div><p>World</p>'
 case: throws error for empty object
 in:
   - [{}]
-throws: 'Malformed YHTML element: empty element key'
+throws: 'Malformed YAHTML element: empty element key'
 ---
 case: handles object with string key null
 in:
@@ -90,12 +90,12 @@ out: '<div></div>'
 case: throws error for element with no tag name
 in:
   - ['#id-only.class-only: "content"']
-throws: 'Malformed YHTML element: "#id-only.class-only" - element must have a valid tag name'
+throws: 'Malformed YAHTML element: "#id-only.class-only" - element must have a valid tag name'
 ---
 case: throws error for element with only attributes
 in:
   - ['src=image.jpg alt=test:']
-throws: 'Malformed YHTML element: "src=image.jpg alt=test" - element must have a valid tag name'
+throws: 'Malformed YAHTML element: "src=image.jpg alt=test" - element must have a valid tag name'
 ---
 case: handles element with invalid tag characters
 in:
@@ -209,7 +209,7 @@ in:
   - 
     - div:
       - {}
-throws: 'Malformed YHTML element: empty element key'
+throws: 'Malformed YAHTML element: empty element key'
 ---
 # Long attribute values
 case: handles very long attribute value

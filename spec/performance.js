@@ -1,4 +1,4 @@
-import { convertToHtml } from '../src/yhtml.js';
+import { convertToHtml } from '../src/yahtml.js';
 
 // Helper to measure execution time
 function benchmark(name, fn, iterations = 1000) {
@@ -118,7 +118,7 @@ function generateRealWorldPage() {
           'header.site-header': [
             {
               'nav.navbar': [
-                'a href="/" class="logo": "YHTML"',
+                'a href="/" class="logo": "YAHTML"',
                 {
                   'ul.nav-menu': [
                     { li: ['a href="/features": "Features"'] },
@@ -136,7 +136,7 @@ function generateRealWorldPage() {
             {
               'section.hero': [
                 'h1.hero-title: "Build HTML with YAML Simplicity"',
-                'p.hero-subtitle: "Write cleaner, more maintainable markup with YHTML"',
+                'p.hero-subtitle: "Write cleaner, more maintainable markup with YAHTML"',
                 {
                   'div.cta-buttons': [
                     'button.btn.btn-primary: "Get Started"',
@@ -165,7 +165,7 @@ function generateRealWorldPage() {
                     {
                       'div.feature-card': [
                         'h3: "Valid YAML"',
-                        'p: "Every YHTML document is valid YAML"'
+                        'p: "Every YAHTML document is valid YAML"'
                       ]
                     }
                   ]
@@ -176,7 +176,7 @@ function generateRealWorldPage() {
         },
         {
           'footer.site-footer': [
-            'p: "© 2024 YHTML. All rights reserved."',
+            'p: "© 2024 YAHTML. All rights reserved."',
             {
               'div.social-links': [
                 'a href="https://github.com": "GitHub"',
@@ -191,7 +191,7 @@ function generateRealWorldPage() {
 }
 
 console.log('===========================================');
-console.log('YHTML to HTML Converter Performance Tests');
+console.log('YAHTML to HTML Converter Performance Tests');
 console.log('===========================================\n');
 
 // Test 1: Simple elements

@@ -10,9 +10,9 @@
 export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'base', 'col', 'embed', 'link', 'param', 'source', 'track', 'wbr'];
 
 /**
- * Convert YHTML array to HTML string
+ * Convert YAHTML array to HTML string
  * 
- * @param {Array} yhtmlContent - The YHTML content as an array
+ * @param {Array} yhtmlContent - The YAHTML content as an array
  * @returns {string} The converted HTML string
  * @throws {TypeError} If yhtmlContent is not an array
  * @throws {Error} If element structure is malformed
@@ -44,17 +44,17 @@ export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'b
  */
 export function convertToHtml(yhtmlContent) {
   if (!Array.isArray(yhtmlContent)) {
-    throw new TypeError('YHTML content must be an array. YHTML documents always start with an array at the root level.');
+    throw new TypeError('YAHTML content must be an array. YAHTML documents always start with an array at the root level.');
   }
 
   return yhtmlContent.map(element => processElement(element)).join('');
 }
 
 /**
- * Process a single YHTML element
+ * Process a single YAHTML element
  * 
  * @private
- * @param {*} element - A YHTML element (can be string, object, array, number, boolean, null, or undefined)
+ * @param {*} element - A YAHTML element (can be string, object, array, number, boolean, null, or undefined)
  * @returns {string} The HTML string for this element
  * 
  * @description
@@ -147,7 +147,7 @@ function processElement(element) {
     
     // Handle undefined or empty key
     if (!key) {
-      throw new Error('Malformed YHTML element: empty element key');
+      throw new Error('Malformed YAHTML element: empty element key');
     }
     
     const value = element[key];
@@ -162,7 +162,7 @@ function processElement(element) {
 
     // Check for malformed elements (no tag name)
     if (!tag) {
-      throw new Error(`Malformed YHTML element: "${key}" - element must have a valid tag name`);
+      throw new Error(`Malformed YAHTML element: "${key}" - element must have a valid tag name`);
     }
 
     // Build opening tag
@@ -264,7 +264,7 @@ function processElement(element) {
  * @returns {{tag: string, id: string, classes: string[], attributes: Array<{name: string, value: string|boolean}>}} Parsed components
  * 
  * @description
- * Parses YHTML element declarations:
+ * Parses YAHTML element declarations:
  * - Tag name: alphanumeric characters and hyphens
  * - ID: preceded by # (e.g., #my-id)
  * - Classes: preceded by . (e.g., .class1.class2)
