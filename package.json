@@ -1,0 +1,57 @@
+{
+  "name": "yhtml",
+  "version": "0.0.1",
+  "description": "YHTML (YAML HTML) - Write HTML as valid YAML with clean, concise syntax",
+  "keywords": [
+    "html",
+    "yaml",
+    "template",
+    "templating",
+    "markup",
+    "converter",
+    "yhtml",
+    "html-generator",
+    "yaml-to-html"
+  ],
+  "homepage": "https://github.com/yuusoft-org/yhtml#readme",
+  "bugs": {
+    "url": "https://github.com/yuusoft-org/yhtml/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuusoft-org/yhtml.git"
+  },
+  "license": "MIT",
+  "author": "Yuusoft",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest run --reporter=verbose",
+    "test:watch": "vitest",
+    "perf": "node spec/performance.test.js",
+    "build:types": "bunx tsc"
+  },
+  "devDependencies": {
+    "vitest": "~3.2.1",
+    "puty": "^0.0.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
