@@ -1,0 +1,228 @@
+file: '../src/yhtml.js'
+group: yhtml-error-handling
+suites: [convertToHtml]
+---
+suite: convertToHtml
+exportName: convertToHtml
+---
+# Non-array input errors
+case: throws error for string input
+in: 
+  - "just a string"
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+case: throws error for number input
+in:
+  - 42
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+case: throws error for boolean input
+in:
+  - true
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+case: throws error for object input
+in:
+  - { div: "content" }
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+case: throws error for null input
+in:
+  - null
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+case: throws error for undefined input
+in:
+  - undefined
+throws: 'YHTML content must be an array. YHTML documents always start with an array at the root level.'
+---
+# Edge cases that should work (not throw errors)
+case: handles empty array without error
+in:
+  - []
+out: ''
+---
+case: handles array with null element
+in:
+  - [null]
+out: ''
+---
+case: handles array with string undefined
+in:
+  - ["undefined"]
+out: 'undefined'
+---
+case: handles array with empty string
+in:
+  - ['']
+out: ''
+---
+case: handles array with mixed null and valid elements
+in:
+  - 
+    - null
+    - 'div: "Hello"'
+    - 'p: "World"'
+out: '<div>Hello</div><p>World</p>'
+---
+# Invalid element structures that should be handled gracefully
+case: throws error for empty object
+in:
+  - [{}]
+throws: 'Malformed YHTML element: empty element key'
+---
+case: handles object with string key null
+in:
+  - [{'null': "content"}]
+out: '<null>content</null>'
+---
+case: handles object with string value undefined
+in:
+  - [{div: "undefined"}]
+out: '<div>undefined</div>'
+---
+case: handles object with null value
+in:
+  - [{div: null}]
+out: '<div></div>'
+---
+# Malformed element declarations
+case: throws error for element with no tag name
+in:
+  - ['#id-only.class-only: "content"']
+throws: 'Malformed YHTML element: "#id-only.class-only" - element must have a valid tag name'
+---
+case: throws error for element with only attributes
+in:
+  - ['src=image.jpg alt=test:']
+throws: 'Malformed YHTML element: "src=image.jpg alt=test" - element must have a valid tag name'
+---
+case: handles element with invalid tag characters
+in:
+  - ['div@invalid: "content"']
+out: '<div>content</div>'
+---
+# Special characters that should be escaped
+case: escapes script tag content to prevent XSS
+in:
+  - ['p: "<script>alert(1)</script>"']
+out: '<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>'
+---
+case: escapes onclick attribute to prevent XSS
+in:
+  - ['div onclick="alert(1)": "content"']
+out: '<div onclick="alert(1)">content</div>'
+---
+# Deeply nested arrays edge case
+case: handles deeply nested empty arrays
+in:
+  -
+    -
+      -
+        -
+          -
+            - []
+out: ''
+---
+case: handles array within element children
+in:
+  - 
+    - div:
+      -
+        - 'p: "nested"'
+out: '<div><p>nested</p></div>'
+---
+# Invalid DOCTYPE handling
+case: handles malformed DOCTYPE
+in:
+  - ['!DOCTYPE': 'html5']
+out: '<!DOCTYPE html>'
+---
+case: handles DOCTYPE with extra content
+in:
+  - ['"!DOCTYPE html extra"': 'ignored']
+out: '<!DOCTYPE html>'
+---
+# Element with colon in attribute value
+case: handles URL in attribute correctly
+in:
+  - ['a href=http://example.com: "Link"']
+out: '<a href="http://example.com">Link</a>'
+---
+case: handles data URL in attribute
+in:
+  - ['img src=data:image/png;base64,abc123:']
+out: '<img src="data:image/png;base64,abc123">'
+---
+# Attribute edge cases
+case: handles attribute with empty value
+in:
+  - ['div data-empty="": "content"']
+out: '<div data-empty="">content</div>'
+---
+case: handles boolean attribute variations
+in:
+  - 
+    - 'input required:'
+    - 'input required="":'
+    - 'input required=required:'
+out: '<input required><input required=""><input required="required">'
+---
+# Escaping edge cases
+case: handles mixed quotes in content
+in:
+  - 
+    - 'p: "She said ''hello'' and \"goodbye\""'
+out: '<p>She said &#39;hello&#39; and &quot;goodbye&quot;</p>'
+---
+case: handles backslash in content
+in:
+  - 
+    - 'p: "Path: C:\Users\test"'
+out: '<p>Path: C:\Users\test</p>'
+---
+# Multiple colons in element declaration
+case: handles CSS property in style attribute
+in:
+  - ['div style="color: red; margin: 10px": "content"']
+out: '<div style="color: red; margin: 10px">content</div>'
+---
+case: handles time format in content
+in:
+  - ['time: "12:30:45"']
+out: '<time>12:30:45</time>'
+---
+# Unicode and special characters
+case: handles emoji in content
+in:
+  - ['p: "Hello 👋 World 🌍"']
+out: '<p>Hello 👋 World 🌍</p>'
+---
+case: handles unicode in attributes
+in:
+  - ['div title="日本語": "content"']
+out: '<div title="日本語">content</div>'
+---
+# Complex nested error recovery
+case: throws error for empty object in nested elements
+in:
+  - 
+    - div:
+      - {}
+throws: 'Malformed YHTML element: empty element key'
+---
+# Long attribute values
+case: handles very long attribute value
+in:
+  - ['div data-long="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua": "content"']
+out: '<div data-long="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua">content</div>'
+---
+# Mixed valid and invalid syntax
+case: handles mixed array and string children
+in:
+  - 
+    - div:
+      - 'span: "one"'
+      - 'em: "two"'
+      - 'strong: "three"'
+out: '<div><span>one</span><em>two</em><strong>three</strong></div>'

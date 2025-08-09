@@ -1,0 +1,39 @@
+# Development files
+spec/
+test/
+*.test.js
+*.spec.js
+*.spec.yaml
+vitest.config.js
+puty.test.js
+tsconfig.json
+
+# Source control
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation source
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

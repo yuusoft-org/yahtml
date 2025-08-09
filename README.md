@@ -183,5 +183,85 @@ Use consistent 2-space indentation throughout the document to keep it concise.
 
 The main difference is that YHTML document is 100% valid YAML, allowing it to leverage existing YAML tooling and integrate seamlessly with YAML-based configurations. Anything that can read a JSON can read a YHTML, no need for special purpose parser.
 
+## JavaScript/TypeScript Usage
+
+### Installation
+
+```bash
+npm install yhtml
+```
+
+Or with Bun:
+```bash
+bun add yhtml
+```
+
+### Quick Example
+
+```javascript
+import { convertToHtml } from 'yhtml';
+
+const yhtmlContent = [
+  {
+    'div#app.container': [
+      'h1: "My Page"',
+      'p: "Welcome to YHTML!"',
+      'button.primary: "Click me"'
+    ]
+  }
+];
+
+const html = convertToHtml(yhtmlContent);
+console.log(html);
+// Output: <div id="app" class="container"><h1>My Page</h1><p>Welcome to YHTML!</p><button class="primary">Click me</button></div>
+```
+
+### API Documentation
+
+#### `convertToHtml(yhtmlContent)`
+
+Converts a YHTML array to an HTML string.
+
+**Parameters:**
+- `yhtmlContent` (Array): The YHTML content as an array
+
+**Returns:**
+- (string): The converted HTML string
+
+**Throws:**
+- `TypeError`: If yhtmlContent is not an array
+- `Error`: If element structure is malformed
+
+#### `SELF_CLOSING_TAGS`
+
+An array of HTML5 void elements (self-closing tags).
+
+```javascript
+import { SELF_CLOSING_TAGS } from 'yhtml';
+console.log(SELF_CLOSING_TAGS);
+// ['br', 'hr', 'img', 'input', 'meta', ...]
+```
+
+### TypeScript Support
+
+YHTML includes TypeScript definitions out of the box.
+
+```typescript
+import { convertToHtml } from 'yhtml';
+
+const content = [
+  'h1: "Hello TypeScript"'
+];
+
+const html: string = convertToHtml(content);
+```
+
+### Performance
+
+YHTML is optimized for performance:
+- **~90,000 ops/sec** for simple elements
+- **~20,000 ops/sec** for real-world pages
+- **~200,000 ops/sec** for HTML escaping
+
 
 

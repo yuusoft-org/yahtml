@@ -1,0 +1,325 @@
+file: '../src/yhtml.js'
+group: yhtml-to-html-converter
+suites: [convertToHtml]
+---
+suite: convertToHtml
+exportName: convertToHtml
+---
+# Basic Elements Tests
+case: converts simple h1 element
+in: 
+  - 
+    - 'h1: "Page Title"'
+out: '<h1>Page Title</h1>'
+---
+case: converts simple paragraph
+in:
+  -
+    - 'p: "Some text content"'
+out: '<p>Some text content</p>'
+---
+case: converts self-closing br element
+in:
+  -
+    - br:
+out: '<br>'
+---
+case: converts multiple root elements
+in:
+  -
+    - 'h1: "Title"'
+    - 'p: "Paragraph"'
+    - br:
+out: '<h1>Title</h1><p>Paragraph</p><br>'
+---
+# Nested Elements Tests
+case: converts nested div with children
+in:
+  -
+    - div:
+      - 'h2: "Card Title"'
+      - 'p: "Card description goes here."'
+out: '<div><h2>Card Title</h2><p>Card description goes here.</p></div>'
+---
+case: converts deeply nested structure
+in:
+  -
+    - div:
+      - div:
+        - div:
+          - 'span: "Deep content"'
+out: '<div><div><div><span>Deep content</span></div></div></div>'
+---
+case: converts mixed nested content
+in:
+  -
+    - article:
+      - header:
+        - 'h1: "Article Title"'
+      - section:
+        - 'p: "First paragraph"'
+        - 'p: "Second paragraph"'
+      - footer:
+        - 'p: "Footer text"'
+out: '<article><header><h1>Article Title</h1></header><section><p>First paragraph</p><p>Second paragraph</p></section><footer><p>Footer text</p></footer></article>'
+---
+# ID and Class Tests
+case: converts element with ID
+in:
+  -
+    - 'button#submit-btn: "Submit"'
+out: '<button id="submit-btn">Submit</button>'
+---
+case: converts element with single class
+in:
+  -
+    - 'div.container: "Content"'
+out: '<div class="container">Content</div>'
+---
+case: converts element with multiple classes
+in:
+  -
+    - 'div.card.featured: "Featured content"'
+out: '<div class="card featured">Featured content</div>'
+---
+case: converts element with ID and classes
+in:
+  -
+    - 'div#main.container.fluid: "Main content"'
+out: '<div id="main" class="container fluid">Main content</div>'
+---
+case: converts nested elements with IDs and classes
+in:
+  -
+    - div#home:
+      - div.header:
+        - 'h2.title: "Welcome"'
+      - div.body:
+        - 'p.text: "Hello World!"'
+out: '<div id="home"><div class="header"><h2 class="title">Welcome</h2></div><div class="body"><p class="text">Hello World!</p></div></div>'
+---
+# Attribute Tests
+case: converts element with simple attributes without quotes
+in:
+  -
+    - img src=photo.jpg alt=Photo:
+out: '<img src="photo.jpg" alt="Photo">'
+---
+case: converts element with quoted attributes
+in:
+  -
+    - 'div class="container fluid" id="main-div"':
+out: '<div class="container fluid" id="main-div"></div>'
+---
+case: converts input with multiple attributes
+in:
+  -
+    - input type=email name=user-email required:
+out: '<input type="email" name="user-email" required>'
+---
+case: converts anchor with href and target
+in:
+  -
+    - 'a href=https://example.com target=_blank: "External Link"'
+out: '<a href="https://example.com" target="_blank">External Link</a>'
+---
+case: converts element with mixed quoted and unquoted attributes
+in:
+  -
+    - 'img src=photo.jpg alt="A beautiful photo"':
+out: '<img src="photo.jpg" alt="A beautiful photo">'
+---
+# Style Attribute Tests
+case: converts element with inline style
+in:
+  -
+    - 'div style="width: 300px; height: 200px;"':
+out: '<div style="width: 300px; height: 200px;"></div>'
+---
+case: converts paragraph with style
+in:
+  -
+    - 'p style="color: red; font-size: 18px;": "Styled text"'
+out: '<p style="color: red; font-size: 18px;">Styled text</p>'
+---
+case: converts element with transform style
+in:
+  -
+    - 'div style="transform: translate(10px, 20px); opacity: 0.8;"':
+out: '<div style="transform: translate(10px, 20px); opacity: 0.8;"></div>'
+---
+# Complex Attribute Combinations
+case: converts element with class shorthand and class attribute
+in:
+  -
+    - 'div.primary class="secondary tertiary": "Content"'
+out: '<div class="primary secondary tertiary">Content</div>'
+---
+case: converts element with ID shorthand and id attribute (attribute wins)
+in:
+  -
+    - 'div#first id=second: "Content"'
+out: '<div id="second">Content</div>'
+---
+case: converts element with all attribute types
+in:
+  -
+    - 'div#main.card.active class="extra" style="margin: 10px;" data-category=premium: "Complex element"'
+out: '<div id="main" class="card active extra" style="margin: 10px;" data-category="premium">Complex element</div>'
+---
+# Navigation Example from README
+case: converts navigation structure
+in:
+  -
+    - nav.primary-nav:
+      - 'a href="/home": "Home"'
+      - 'a href="/about": "About"'
+out: '<nav class="primary-nav"><a href="/home">Home</a><a href="/about">About</a></nav>'
+---
+# Empty Elements Tests
+case: converts element with empty string content
+in:
+  -
+    - 'div: ""'
+out: '<div></div>'
+---
+case: converts element with null content
+in:
+  -
+    - div: null
+out: '<div></div>'
+---
+case: converts element with empty array (no children)
+in:
+  -
+    - div: []
+out: '<div></div>'
+---
+# Special Characters and Escaping Tests
+case: escapes HTML entities in content
+in:
+  -
+    - 'p: "This & that < more > stuff"'
+out: '<p>This &amp; that &lt; more &gt; stuff</p>'
+---
+case: escapes quotes in content
+in:
+  -
+    - 'p: "He said \"Hello\" to me"'
+out: '<p>He said &quot;Hello&quot; to me</p>'
+---
+case: preserves special characters in attributes
+in:
+  -
+    - 'div data-value="<>&": "Content"'
+out: '<div data-value="&lt;&gt;&amp;">Content</div>'
+---
+# List Structure Tests
+case: converts unordered list
+in:
+  -
+    - ul:
+      - 'li: "First item"'
+      - 'li: "Second item"'
+      - 'li: "Third item"'
+out: '<ul><li>First item</li><li>Second item</li><li>Third item</li></ul>'
+---
+case: converts ordered list with nested content
+in:
+  -
+    - ol:
+      - li:
+        - 'span: "Item "'
+        - 'strong: "One"'
+      - 'li: "Item Two"'
+out: '<ol><li><span>Item </span><strong>One</strong></li><li>Item Two</li></ol>'
+---
+# Form Elements Tests
+case: converts form with various inputs
+in:
+  -
+    - 'form action="/submit" method=post':
+      - 'label for=name: "Name:"'
+      - input type=text id=name name=name required:
+      - 'label for=email: "Email:"'
+      - input type=email id=email name=email:
+      - 'button type=submit: "Submit"'
+out: '<form action="/submit" method="post"><label for="name">Name:</label><input type="text" id="name" name="name" required><label for="email">Email:</label><input type="email" id="email" name="email"><button type="submit">Submit</button></form>'
+---
+# Table Structure Test
+case: converts simple table
+in:
+  -
+    - table:
+      - thead:
+        - tr:
+          - 'th: "Name"'
+          - 'th: "Age"'
+      - tbody:
+        - tr:
+          - 'td: "John"'
+          - 'td: "30"'
+        - tr:
+          - 'td: "Jane"'
+          - 'td: "25"'
+out: '<table><thead><tr><th>Name</th><th>Age</th></tr></thead><tbody><tr><td>John</td><td>30</td></tr><tr><td>Jane</td><td>25</td></tr></tbody></table>'
+---
+# Meta and Self-Closing Tags Tests
+case: converts meta tags
+in:
+  -
+    - meta charset=UTF-8:
+    - 'meta name=viewport content="width=device-width, initial-scale=1.0"':
+out: '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">'
+---
+case: converts various self-closing tags
+in:
+  -
+    - hr:
+    - br:
+    - img src=image.jpg alt=Image:
+    - input type=text:
+out: '<hr><br><img src="image.jpg" alt="Image"><input type="text">'
+---
+# Edge Cases
+case: handles element with number as content
+in:
+  -
+    - span: 42
+out: '<span>42</span>'
+---
+case: handles element with boolean as content
+in:
+  -
+    - span: true
+out: '<span>true</span>'
+---
+case: handles deeply nested single child chains
+in:
+  -
+    - div:
+      - div:
+        - div:
+          - div:
+            - 'div: "Deep"'
+out: '<div><div><div><div><div>Deep</div></div></div></div></div>'
+---
+# Complete Document Example
+case: converts complete HTML document structure
+in:
+  -
+    - '"!DOCTYPE html"':
+    - html lang=en:
+      - head:
+        - meta charset=UTF-8:
+        - 'title: "YHTML Test Page"'
+        - 'style: "body { font-family: sans-serif; }"'
+      - body:
+        - div#app.container:
+          - header:
+            - 'h1: "Welcome to YHTML"'
+          - main:
+            - 'p: "This is a test page."'
+          - footer:
+            - 'p: "© 2024"'
+out: '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>YHTML Test Page</title><style>body { font-family: sans-serif; }</style></head><body><div id="app" class="container"><header><h1>Welcome to YHTML</h1></header><main><p>This is a test page.</p></main><footer><p>© 2024</p></footer></div></body></html>'
