@@ -1,6 +1,6 @@
 {
   "name": "yahtml",
-  "version": "0.0.1",
+  "version": "0.0.2-rc1",
   "description": "YAHTML (YAML HTML) - Write HTML as valid YAML with clean, concise syntax",
   "keywords": [
     "html",

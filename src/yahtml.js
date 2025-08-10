@@ -41,6 +41,20 @@ export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'b
  *   'a href="https://example.com": "Link"'
  * ])
  * // Returns: '<img src="photo.jpg" alt="Photo"><a href="https://example.com">Link</a>'
+ * 
+ * @example
+ * // Object notation with attributes and children
+ * convertToHtml([
+ *   { a: { href: '/', class: 'nav-link', children: ['Home'] }},
+ *   { div: { 
+ *     class: 'container',
+ *     children: [
+ *       { h1: { id: 'title', children: ['Welcome'] }},
+ *       { p: { children: ['Hello world'] }}
+ *     ]
+ *   }}
+ * ])
+ * // Returns: '<a href="/" class="nav-link">Home</a><div class="container"><h1 id="title">Welcome</h1><p>Hello world</p></div>'
  */
 export function convertToHtml(yhtmlContent) {
   if (!Array.isArray(yhtmlContent)) {
@@ -63,6 +77,8 @@ export function convertToHtml(yhtmlContent) {
  * - string: parses as element declaration or plain text
  * - number/boolean: converts to escaped text
  * - object: processes as element with attributes and content
+ *   - Standard notation: { tag: content } or { tag: [children] }
+ *   - Object notation: { tag: { attr: value, children: [...] }}
  * - array: recursively processes nested arrays
  */
 function processElement(element) {
@@ -212,6 +228,29 @@ function processElement(element) {
       }
     }
 
+    // Handle object notation attributes before closing tag
+    if (typeof value === 'object' && value !== null && 'children' in value) {
+      // Extract attributes from the object (excluding 'children')
+      for (const [attrName, attrValue] of Object.entries(value)) {
+        if (attrName === 'children') continue;
+        
+        // Check if this attribute was already added from the key
+        const existingAttr = html.match(new RegExp(` ${attrName}="[^"]*"`));
+        if (!existingAttr) {
+          if (attrValue === true) {
+            // Boolean attribute
+            html += ` ${attrName}`;
+          } else if (attrValue === '') {
+            // Empty string attribute
+            html += ` ${attrName}=""`;
+          } else {
+            // Regular attribute
+            html += ` ${attrName}="${escapeAttribute(String(attrValue))}"`;
+          }
+        }
+      }
+    }
+
     // Check if it's a self-closing tag
     if (SELF_CLOSING_TAGS.includes(tag)) {
       html += '>';
@@ -233,6 +272,29 @@ function processElement(element) {
         }).join('');
       };
       html += flattenChildren(value);
+    } else if (typeof value === 'object' && value !== null && 'children' in value) {
+      // Object notation with children - attributes already handled above
+      // Process children
+      const children = value.children;
+      if (Array.isArray(children)) {
+        const flattenChildren = (arr) => {
+          return arr.map(child => {
+            if (Array.isArray(child)) {
+              return flattenChildren(child);
+            }
+            return processElement(child);
+          }).join('');
+        };
+        html += flattenChildren(children);
+      } else if (children !== null && children !== undefined && children !== '') {
+        // Single child value
+        const rawContentTags = ['script', 'style'];
+        if (rawContentTags.includes(tag)) {
+          html += String(children);
+        } else {
+          html += escapeHtml(String(children));
+        }
+      }
     } else if (value !== null && value !== undefined && value !== '') {
       // Has text content
       // Some elements like script and style should not escape their content
