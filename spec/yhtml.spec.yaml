@@ -323,3 +323,171 @@ in:
           - footer:
             - 'p: "© 2024"'
 out: '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>YAHTML Test Page</title><style>body { font-family: sans-serif; }</style></head><body><div id="app" class="container"><header><h1>Welcome to YAHTML</h1></header><main><p>This is a test page.</p></main><footer><p>© 2024</p></footer></div></body></html>'
+---
+# Object Notation Tests
+case: converts element with object notation and single attribute
+in:
+  -
+    - a:
+        href: /
+        children:
+          - Home
+out: '<a href="/">Home</a>'
+---
+case: converts element with multiple attributes using object notation
+in:
+  -
+    - button:
+        type: submit
+        class: btn btn-primary
+        id: submit-btn
+        children:
+          - Submit
+out: '<button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>'
+---
+case: converts nested structure with object notation
+in:
+  -
+    - div:
+        class: container
+        children:
+          - p:
+              - Hello
+out: '<div class="container"><p>Hello</p></div>'
+---
+case: converts boolean attributes with object notation
+in:
+  -
+    - input:
+        type: checkbox
+        checked: true
+        disabled: true
+        children: []
+out: '<input type="checkbox" checked disabled>'
+---
+case: converts empty string attributes with object notation
+in:
+  -
+    - div:
+        data-empty: ''
+        children:
+          - Content
+out: '<div data-empty="">Content</div>'
+---
+case: converts self-closing tag with object notation
+in:
+  -
+    - img:
+        src: /photo.jpg
+        alt: Photo
+        width: '200'
+        children: []
+out: '<img src="/photo.jpg" alt="Photo" width="200">'
+---
+case: converts nested children with object notation
+in:
+  -
+    - div:
+        class: container
+        children:
+          - h1:
+              class: title
+              children:
+                - Hello
+          - p:
+              class: text
+              children:
+                - World
+out: '<div class="container"><h1 class="title">Hello</h1><p class="text">World</p></div>'
+---
+case: converts mixed notation with shorthand and object
+in:
+  -
+    - div#main.wrapper:
+        data-test: value
+        children:
+          - span.label:
+              - Label
+          - span:
+              class: value
+              children:
+                - Value
+out: '<div id="main" class="wrapper" data-test="value"><span class="label">Label</span><span class="value">Value</span></div>'
+---
+case: escapes special characters in object notation attributes
+in:
+  -
+    - a:
+        href: 'https://example.com?param=value&other=123'
+        title: 'Link with "quotes" & symbols'
+        children:
+          - Click here
+out: '<a href="https://example.com?param=value&amp;other=123" title="Link with &quot;quotes&quot; &amp; symbols">Click here</a>'
+---
+case: converts single string child with object notation
+in:
+  -
+    - p:
+        class: paragraph
+        children: Single string child
+out: '<p class="paragraph">Single string child</p>'
+---
+case: preserves raw content in script tag with object notation
+in:
+  -
+    - script:
+        type: text/javascript
+        children: 'console.log("Test & <script>");'
+out: '<script type="text/javascript">console.log("Test & <script>");</script>'
+---
+case: preserves raw content in style tag with object notation
+in:
+  -
+    - style:
+        type: text/css
+        children: '.class > div { content: "Test & <style>"; }'
+out: '<style type="text/css">.class > div { content: "Test & <style>"; }</style>'
+---
+case: handles empty children array with object notation
+in:
+  -
+    - div:
+        class: empty
+        children: []
+out: '<div class="empty"></div>'
+---
+case: handles null children with object notation
+in:
+  -
+    - div:
+        class: null-child
+        children: null
+out: '<div class="null-child"></div>'
+---
+case: treats object without children property as text content
+in:
+  -
+    - div:
+        someProperty: value
+out: '<div>[object Object]</div>'
+---
+case: complex form with object notation
+in:
+  -
+    - form:
+        action: /submit
+        method: post
+        class: user-form
+        children:
+          - input:
+              type: text
+              name: username
+              placeholder: Enter username
+              required: true
+              children: []
+          - button:
+              type: submit
+              class: btn btn-primary
+              children:
+                - Submit Form
+out: '<form action="/submit" method="post" class="user-form"><input type="text" name="username" placeholder="Enter username" required><button type="submit" class="btn btn-primary">Submit Form</button></form>'
