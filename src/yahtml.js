@@ -159,6 +159,11 @@ function processElement(element) {
 
   // Handle objects (element declarations)
   if (typeof element === 'object' && !Array.isArray(element)) {
+    // Check if this is a Date or other built-in object type that shouldn't be used as content
+    if (element instanceof Date) {
+      throw new TypeError('Date objects cannot be used as content. Convert to string first (e.g., date.toISOString() or date.toLocaleDateString())');
+    }
+    
     const key = Object.keys(element)[0];
     
     // Handle undefined or empty key
@@ -167,6 +172,11 @@ function processElement(element) {
     }
     
     const value = element[key];
+    
+    // Check if value is a Date object
+    if (value instanceof Date) {
+      throw new TypeError('Date objects cannot be used as element content. Convert to string first (e.g., date.toISOString() or date.toLocaleDateString())');
+    }
 
     // Parse the element key for tag, id, classes, and attributes
     const { tag, id, classes, attributes } = parseElementKey(key);
@@ -288,6 +298,9 @@ function processElement(element) {
         html += flattenChildren(children);
       } else if (children !== null && children !== undefined && children !== '') {
         // Single child value
+        if (children instanceof Date) {
+          throw new TypeError('Date objects cannot be used as element content. Convert to string first (e.g., date.toISOString() or date.toLocaleDateString())');
+        }
         const rawContentTags = ['script', 'style'];
         if (rawContentTags.includes(tag)) {
           html += String(children);

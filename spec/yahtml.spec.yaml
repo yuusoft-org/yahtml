@@ -491,3 +491,33 @@ in:
               children:
                 - Submit Form
 out: '<form action="/submit" method="post" class="user-form"><input type="text" name="username" placeholder="Enter username" required><button type="submit" class="btn btn-primary">Submit Form</button></form>'
+---
+# Date String Tests
+case: handles date string as element content
+in:
+  -
+    - 'span: "2024-01-15"'
+out: '<span>2024-01-15</span>'
+---
+case: handles date string in nested structure
+in:
+  -
+    - article:
+      - 'h1: "Test Post"'
+      - div.meta:
+        - 'span: "Published: 2024-01-15"'
+out: '<article><h1>Test Post</h1><div class="meta"><span>Published: 2024-01-15</span></div></article>'
+---
+case: handles ISO date string
+in:
+  -
+    - 'time: "2024-03-10T14:30:00.000Z"'
+out: '<time>2024-03-10T14:30:00.000Z</time>'
+---
+case: handles date string with object notation
+in:
+  -
+    - time:
+        class: publication-date
+        children: '2024-07-04'
+out: '<time class="publication-date">2024-07-04</time>'
