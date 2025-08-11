@@ -48,10 +48,13 @@
     "build:types": "bunx tsc"
   },
   "devDependencies": {
-    "vitest": "~3.2.1",
-    "puty": "^0.0.4"
+    "puty": "^0.0.4",
+    "vitest": "~3.2.1"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }
