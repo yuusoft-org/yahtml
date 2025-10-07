@@ -1,9 +1,9 @@
 /**
  * Convert YAHTML array to HTML string
  *
- * @param {Array} yhtmlContent - The YAHTML content as an array
+ * @param {Array} yahtmlContent - The YAHTML content as an array
  * @returns {string} The converted HTML string
- * @throws {TypeError} If yhtmlContent is not an array
+ * @throws {TypeError} If yahtmlContent is not an array
  * @throws {Error} If element structure is malformed
  *
  * @example
@@ -31,7 +31,7 @@
  * ])
  * // Returns: '<img src="photo.jpg" alt="Photo"><a href="https://example.com">Link</a>'
  */
-export function convertToHtml(yhtmlContent: any[]): string;
+export function convertToHtml(yahtmlContent: any[]): string;
 /**
  * List of HTML5 void elements (self-closing tags)
  * @constant {string[]}
