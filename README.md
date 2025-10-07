@@ -89,9 +89,9 @@ YAHTML makes conscious trade-offs:
 **Limitations:**
 1. **Line Length**: Complex elements with many attributes can create long lines
    ```yaml
-   - div class="card featured" id="main-card" data-category="premium" style="transform: rotate(45deg); position: relative;": "Content"
+   - 'div class="card featured" id="main-card" data-category="premium" style="transform: rotate(45deg); position: relative;"': "Content"
    ```
-If you have a lot of long attributes and attribute values, YAHTML won't really make sense for you.
+If you have a lot of long attributes and attribute values, YAHTML will lose its benefits.
 
 ## Document Structure
 
@@ -167,9 +167,9 @@ YAHTML uses standard HTML attributes. Quotes are optional for attribute values w
 ### Style Attribute
 The `style` attribute works like any other standard HTML attribute:
 ```yaml
-- div style="width: 300px; height: 200px; background-color: #f0f0f0;":
-- p style="color: red; font-size: 18px;": "Styled text"
-- div style="transform: translate(10px, 20px); opacity: 0.8;":
+- 'div style="width: 300px; height: 200px; background-color: #f0f0f0;"':
+- 'p style="color: red; font-size: 18px;"': "Styled text"
+- 'div style="transform: translate(10px, 20px); opacity: 0.8;"':
 ```
 
 
@@ -181,7 +181,9 @@ Use consistent 2-space indentation throughout the document to keep it concise.
 
 ## Why Not HAML or Pug?
 
-The main difference is that YAHTML document is 100% valid YAML, allowing it to leverage existing YAML tooling and integrate seamlessly with YAML-based configurations. Anything that can read a JSON can read a YAHTML, no need for special purpose parser.
+The main difference is that a YAHTML document is 100% valid YAML, allowing it to leverage existing YAML tooling and integrate seamlessly with YAML or JSON based configurations.
+
+You can use YAHTML with [Jempl](https://github.com/yuusoft-org/jempl), which will give you the full power of a templating engine while maintaining the universal YAML/JSON structure.
 
 ## JavaScript/TypeScript Usage
 
@@ -201,7 +203,7 @@ bun add yahtml
 ```javascript
 import { convertToHtml } from 'yahtml';
 
-const yhtmlContent = [
+const yahtmlContent = [
   {
     'div#app.container': [
       'h1: "My Page"',
@@ -211,57 +213,24 @@ const yhtmlContent = [
   }
 ];
 
-const html = convertToHtml(yhtmlContent);
+const html = convertToHtml(yahtmlContent);
 console.log(html);
 // Output: <div id="app" class="container"><h1>My Page</h1><p>Welcome to YAHTML!</p><button class="primary">Click me</button></div>
 ```
 
 ### API Documentation
 
-#### `convertToHtml(yhtmlContent)`
+#### `convertToHtml(yahtmlContent)`
 
 Converts a YAHTML array to an HTML string.
 
 **Parameters:**
-- `yhtmlContent` (Array): The YAHTML content as an array
+- `yahtmlContent` (Array): The YAHTML content as an array
 
 **Returns:**
 - (string): The converted HTML string
 
 **Throws:**
-- `TypeError`: If yhtmlContent is not an array
+- `TypeError`: If yahtmlContent is not an array
 - `Error`: If element structure is malformed
-
-#### `SELF_CLOSING_TAGS`
-
-An array of HTML5 void elements (self-closing tags).
-
-```javascript
-import { SELF_CLOSING_TAGS } from 'yahtml';
-console.log(SELF_CLOSING_TAGS);
-// ['br', 'hr', 'img', 'input', 'meta', ...]
-```
-
-### TypeScript Support
-
-YAHTML includes TypeScript definitions out of the box.
-
-```typescript
-import { convertToHtml } from 'yahtml';
-
-const content = [
-  'h1: "Hello TypeScript"'
-];
-
-const html: string = convertToHtml(content);
-```
-
-### Performance
-
-YAHTML is optimized for performance:
-- **~90,000 ops/sec** for simple elements
-- **~20,000 ops/sec** for real-world pages
-- **~200,000 ops/sec** for HTML escaping
-
-
 

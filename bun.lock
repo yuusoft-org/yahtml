@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "yhtml",
+      "name": "yahtml",
       "devDependencies": {
         "puty": "^0.0.4",
         "vitest": "~3.2.1",

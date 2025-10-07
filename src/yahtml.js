@@ -12,9 +12,9 @@ export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'b
 /**
  * Convert YAHTML array to HTML string
  * 
- * @param {Array} yhtmlContent - The YAHTML content as an array
+ * @param {Array} yahtmlContent - The YAHTML content as an array
  * @returns {string} The converted HTML string
- * @throws {TypeError} If yhtmlContent is not an array
+ * @throws {TypeError} If yahtmlContent is not an array
  * @throws {Error} If element structure is malformed
  * 
  * @example
@@ -56,12 +56,12 @@ export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'b
  * ])
  * // Returns: '<a href="/" class="nav-link">Home</a><div class="container"><h1 id="title">Welcome</h1><p>Hello world</p></div>'
  */
-export function convertToHtml(yhtmlContent) {
-  if (!Array.isArray(yhtmlContent)) {
+export function convertToHtml(yahtmlContent) {
+  if (!Array.isArray(yahtmlContent)) {
     throw new TypeError('YAHTML content must be an array. YAHTML documents always start with an array at the root level.');
   }
 
-  return yhtmlContent.map(element => processElement(element)).join('');
+  return yahtmlContent.map(element => processElement(element)).join('');
 }
 
 /**
