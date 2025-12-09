@@ -163,7 +163,12 @@ function processElement(element) {
     if (element instanceof Date) {
       throw new TypeError('Date objects cannot be used as content. Convert to string first (e.g., date.toISOString() or date.toLocaleDateString())');
     }
-    
+
+    // Check for raw HTML object { __html: '...' } as standalone element
+    if ('__html' in element) {
+      return String(element.__html ?? '');
+    }
+
     const key = Object.keys(element)[0];
     
     // Handle undefined or empty key

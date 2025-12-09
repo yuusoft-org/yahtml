@@ -596,3 +596,32 @@ in:
     - pre:
         __html: '  indented\n    more indent'
 out: '<pre>  indented\n    more indent</pre>'
+---
+# BUG: Raw HTML as top-level element (standalone __html object)
+case: raw HTML object as standalone element in array
+in:
+  -
+    - __html: '<p>Hello</p>'
+out: '<p>Hello</p>'
+---
+case: raw HTML object as standalone element in children array
+in:
+  -
+    - rtgl-view:
+      - __html: '<p>Hello</p>'
+out: '<rtgl-view><p>Hello</p></rtgl-view>'
+---
+case: multiple standalone raw HTML objects in array
+in:
+  -
+    - __html: '<p>First</p>'
+    - __html: '<p>Second</p>'
+out: '<p>First</p><p>Second</p>'
+---
+case: mixed standalone raw HTML and regular elements
+in:
+  -
+    - 'h1: "Title"'
+    - __html: '<p>Raw paragraph</p>'
+    - 'p: "Normal paragraph"'
+out: '<h1>Title</h1><p>Raw paragraph</p><p>Normal paragraph</p>'
