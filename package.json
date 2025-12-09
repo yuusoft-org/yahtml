@@ -1,6 +1,6 @@
 {
   "name": "yahtml",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "YAHTML (YAML HTML) - Write HTML as valid YAML with clean, concise syntax",
   "keywords": [
     "html",
@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "puty": "^0.0.4",
-    "vitest": "~3.2.1"
+    "vitest": "^4.0.15"
   },
   "engines": {
     "node": ">=14.0.0"
