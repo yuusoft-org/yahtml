@@ -521,3 +521,78 @@ in:
         class: publication-date
         children: '2024-07-04'
 out: '<time class="publication-date">2024-07-04</time>'
+---
+# Raw HTML Content Tests (__html)
+case: inserts raw HTML via __html object
+in:
+  -
+    - div:
+        __html: '<b>bold</b>'
+out: '<div><b>bold</b></div>'
+---
+case: raw HTML with special characters not escaped
+in:
+  -
+    - p:
+        __html: '<span class="test">Hello & World</span>'
+out: '<p><span class="test">Hello & World</span></p>'
+---
+case: raw HTML in object notation with children property
+in:
+  -
+    - div:
+        class: content
+        children:
+          __html: '<em>emphasized</em>'
+out: '<div class="content"><em>emphasized</em></div>'
+---
+case: raw HTML with null __html value outputs empty string
+in:
+  -
+    - span:
+        __html: null
+out: '<span></span>'
+---
+case: raw HTML with numeric __html value converts to string
+in:
+  -
+    - span:
+        __html: 42
+out: '<span>42</span>'
+---
+case: raw HTML nested in structure
+in:
+  -
+    - article:
+      - 'h1: "Title"'
+      - div.content:
+          __html: '<p>Pre-rendered <strong>content</strong></p>'
+out: '<article><h1>Title</h1><div class="content"><p>Pre-rendered <strong>content</strong></p></div></article>'
+---
+case: raw HTML with complex markup
+in:
+  -
+    - div:
+        __html: '<ul><li>Item 1</li><li>Item 2</li></ul>'
+out: '<div><ul><li>Item 1</li><li>Item 2</li></ul></div>'
+---
+case: raw HTML with attributes on parent element
+in:
+  -
+    - div#main.container:
+        __html: '<span>content</span>'
+out: '<div id="main" class="container"><span>content</span></div>'
+---
+case: raw HTML empty string
+in:
+  -
+    - div:
+        __html: ''
+out: '<div></div>'
+---
+case: raw HTML preserves whitespace
+in:
+  -
+    - pre:
+        __html: '  indented\n    more indent'
+out: '<pre>  indented\n    more indent</pre>'

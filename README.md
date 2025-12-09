@@ -173,6 +173,22 @@ The `style` attribute works like any other standard HTML attribute:
 ```
 
 
+## Raw HTML Content
+
+Use `{ __html: '...' }` to insert pre-rendered HTML without escaping:
+
+```yaml
+- div:
+    __html: '<b>bold</b> and <em>italic</em>'
+```
+
+This outputs:
+```html
+<div><b>bold</b> and <em>italic</em></div>
+```
+
+Useful for inserting pre-rendered content like Markdown output or sanitized user HTML. Ensure the content is trusted/sanitized before using.
+
 ## Best Practices
 
 Use consistent 2-space indentation throughout the document to keep it concise.

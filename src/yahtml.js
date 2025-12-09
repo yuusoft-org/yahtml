@@ -301,21 +301,31 @@ function processElement(element) {
         if (children instanceof Date) {
           throw new TypeError('Date objects cannot be used as element content. Convert to string first (e.g., date.toISOString() or date.toLocaleDateString())');
         }
-        const rawContentTags = ['script', 'style'];
-        if (rawContentTags.includes(tag)) {
-          html += String(children);
+        // Check for raw HTML object { __html: '...' }
+        if (typeof children === 'object' && children !== null && '__html' in children) {
+          html += String(children.__html ?? '');
         } else {
-          html += escapeHtml(String(children));
+          const rawContentTags = ['script', 'style'];
+          if (rawContentTags.includes(tag)) {
+            html += String(children);
+          } else {
+            html += escapeHtml(String(children));
+          }
         }
       }
     } else if (value !== null && value !== undefined && value !== '') {
       // Has text content
-      // Some elements like script and style should not escape their content
-      const rawContentTags = ['script', 'style'];
-      if (rawContentTags.includes(tag)) {
-        html += String(value);
+      // Check for raw HTML object { __html: '...' }
+      if (typeof value === 'object' && value !== null && '__html' in value) {
+        html += String(value.__html ?? '');
       } else {
-        html += escapeHtml(String(value));
+        // Some elements like script and style should not escape their content
+        const rawContentTags = ['script', 'style'];
+        if (rawContentTags.includes(tag)) {
+          html += String(value);
+        } else {
+          html += escapeHtml(String(value));
+        }
       }
     } else if (value === undefined) {
       // Don't output 'undefined' as text
