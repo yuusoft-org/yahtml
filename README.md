@@ -250,3 +250,31 @@ Converts a YAHTML array to an HTML string.
 - `TypeError`: If yahtmlContent is not an array
 - `Error`: If element structure is malformed
 
+#### `parseElementKey(key)`
+
+Parses a YAHTML element declaration key (selector + attrs) into structured metadata.
+
+**Parameters:**
+- `key` (string): Element key like `div#main.card data-id=42`
+
+**Returns:**
+- Parsed selector object with:
+  - `tag`, `id`, `classes`, `attributes`
+  - `ranges` for tag/id/class offsets within the key
+
+#### `parseYahtmlAst(yahtmlContent)`
+
+Builds an AST from YAHTML input without rendering HTML.
+
+**Parameters:**
+- `yahtmlContent` (Array): YAHTML content array
+
+**Returns:**
+- Root AST node:
+  - `{ type: "root", children: [...] }`
+- Child node kinds:
+  - `element`, `text`, `rawHtml`, `doctype`, `fragment`
+
+**Throws:**
+- `TypeError`: If `yahtmlContent` is not an array
+- `Error`: If an element declaration is malformed

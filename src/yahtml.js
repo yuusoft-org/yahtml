@@ -1,13 +1,6 @@
-/**
- * List of HTML5 void elements (self-closing tags)
- * @constant {string[]}
- * @example
- * // Check if a tag is self-closing
- * if (SELF_CLOSING_TAGS.includes('br')) {
- *   // handle self-closing tag
- * }
- */
-export const SELF_CLOSING_TAGS = ['br', 'hr', 'img', 'input', 'meta', 'area', 'base', 'col', 'embed', 'link', 'param', 'source', 'track', 'wbr'];
+import { SELF_CLOSING_TAGS } from "./constants.js";
+export { SELF_CLOSING_TAGS } from "./constants.js";
+export { parseElementKey, parseYahtmlAst } from "./parser.js";
 
 /**
  * Convert YAHTML array to HTML string
