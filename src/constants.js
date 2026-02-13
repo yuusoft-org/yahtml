@@ -1,0 +1,16 @@
+export const SELF_CLOSING_TAGS = [
+  "br",
+  "hr",
+  "img",
+  "input",
+  "meta",
+  "area",
+  "base",
+  "col",
+  "embed",
+  "link",
+  "param",
+  "source",
+  "track",
+  "wbr",
+];

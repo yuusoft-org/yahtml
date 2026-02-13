@@ -30,15 +30,21 @@
  *   'a href="https://example.com": "Link"'
  * ])
  * // Returns: '<img src="photo.jpg" alt="Photo"><a href="https://example.com">Link</a>'
+ *
+ * @example
+ * // Object notation with attributes and children
+ * convertToHtml([
+ *   { a: { href: '/', class: 'nav-link', children: ['Home'] }},
+ *   { div: {
+ *     class: 'container',
+ *     children: [
+ *       { h1: { id: 'title', children: ['Welcome'] }},
+ *       { p: { children: ['Hello world'] }}
+ *     ]
+ *   }}
+ * ])
+ * // Returns: '<a href="/" class="nav-link">Home</a><div class="container"><h1 id="title">Welcome</h1><p>Hello world</p></div>'
  */
 export function convertToHtml(yahtmlContent: any[]): string;
-/**
- * List of HTML5 void elements (self-closing tags)
- * @constant {string[]}
- * @example
- * // Check if a tag is self-closing
- * if (SELF_CLOSING_TAGS.includes('br')) {
- *   // handle self-closing tag
- * }
- */
-export const SELF_CLOSING_TAGS: string[];
+export { SELF_CLOSING_TAGS } from "./constants.js";
+export { parseElementKey, parseYahtmlAst } from "./parser.js";
