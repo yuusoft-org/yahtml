@@ -1,0 +1,753 @@
+file: ../src/parser.js
+group: yahtml-parser
+suites:
+  - parseElementKey
+  - parseYahtmlAst
+---
+suite: parseElementKey
+exportName: parseElementKey
+---
+case: parses basic tag with trailing colon
+in:
+  - 'br:'
+out:
+  raw: 'br:'
+  normalized: br
+  tag: br
+  id: ''
+  classes: []
+  attributes: []
+  ranges:
+    tag:
+      start: 0
+      end: 2
+    id: null
+    classes: []
+---
+case: parses selector with id classes attrs and ranges
+in:
+  - 'div#main.card.active class="extra one" data-id=123 required:'
+out:
+  raw: 'div#main.card.active class="extra one" data-id=123 required:'
+  normalized: div#main.card.active class="extra one" data-id=123 required
+  tag: div
+  id: main
+  classes:
+    - card
+    - active
+  attributes:
+    - name: class
+      value: extra one
+      kind: value
+      quote: '"'
+      range:
+        start: 21
+        end: 38
+      nameRange:
+        start: 21
+        end: 26
+      valueRange:
+        start: 28
+        end: 37
+      rawValueRange:
+        start: 27
+        end: 38
+    - name: data-id
+      value: '123'
+      kind: value
+      quote: null
+      range:
+        start: 39
+        end: 50
+      nameRange:
+        start: 39
+        end: 46
+      valueRange:
+        start: 47
+        end: 50
+      rawValueRange:
+        start: 47
+        end: 50
+    - name: required
+      value: true
+      kind: boolean
+      range:
+        start: 51
+        end: 59
+      nameRange:
+        start: 51
+        end: 59
+  ranges:
+    tag:
+      start: 0
+      end: 3
+    id:
+      start: 4
+      end: 8
+    classes:
+      - start: 9
+        end: 13
+      - start: 14
+        end: 20
+---
+case: parses url style attribute values with colons
+in:
+  - 'img src=https://example.com/a.png alt="Hero" loading=lazy:'
+out:
+  raw: 'img src=https://example.com/a.png alt="Hero" loading=lazy:'
+  normalized: img src=https://example.com/a.png alt="Hero" loading=lazy
+  tag: img
+  id: ''
+  classes: []
+  attributes:
+    - name: src
+      value: https://example.com/a.png
+      kind: value
+      quote: null
+      range:
+        start: 4
+        end: 33
+      nameRange:
+        start: 4
+        end: 7
+      valueRange:
+        start: 8
+        end: 33
+      rawValueRange:
+        start: 8
+        end: 33
+    - name: alt
+      value: Hero
+      kind: value
+      quote: '"'
+      range:
+        start: 34
+        end: 44
+      nameRange:
+        start: 34
+        end: 37
+      valueRange:
+        start: 39
+        end: 43
+      rawValueRange:
+        start: 38
+        end: 44
+    - name: loading
+      value: lazy
+      kind: value
+      quote: null
+      range:
+        start: 45
+        end: 57
+      nameRange:
+        start: 45
+        end: 52
+      valueRange:
+        start: 53
+        end: 57
+      rawValueRange:
+        start: 53
+        end: 57
+  ranges:
+    tag:
+      start: 0
+      end: 3
+    id: null
+    classes: []
+---
+case: parses single-quoted attribute values
+in:
+  - 'a href=''/x y'' target=_blank:'
+out:
+  raw: 'a href=''/x y'' target=_blank:'
+  normalized: a href='/x y' target=_blank
+  tag: a
+  id: ''
+  classes: []
+  attributes:
+    - name: href
+      value: /x y
+      kind: value
+      quote: ''''
+      range:
+        start: 2
+        end: 13
+      nameRange:
+        start: 2
+        end: 6
+      valueRange:
+        start: 8
+        end: 12
+      rawValueRange:
+        start: 7
+        end: 13
+    - name: target
+      value: _blank
+      kind: value
+      quote: null
+      range:
+        start: 14
+        end: 27
+      nameRange:
+        start: 14
+        end: 20
+      valueRange:
+        start: 21
+        end: 27
+      rawValueRange:
+        start: 21
+        end: 27
+  ranges:
+    tag:
+      start: 0
+      end: 1
+    id: null
+    classes: []
+---
+case: parses boolean attributes
+in:
+  - 'input required disabled:'
+out:
+  raw: 'input required disabled:'
+  normalized: input required disabled
+  tag: input
+  id: ''
+  classes: []
+  attributes:
+    - name: required
+      value: true
+      kind: boolean
+      range:
+        start: 6
+        end: 14
+      nameRange:
+        start: 6
+        end: 14
+    - name: disabled
+      value: true
+      kind: boolean
+      range:
+        start: 15
+        end: 23
+      nameRange:
+        start: 15
+        end: 23
+  ranges:
+    tag:
+      start: 0
+      end: 5
+    id: null
+    classes: []
+---
+case: handles empty selector key
+in:
+  - '   '
+out:
+  raw: '   '
+  normalized: '   '
+  tag: ''
+  id: ''
+  classes: []
+  attributes: []
+  ranges:
+    tag: null
+    id: null
+    classes: []
+---
+case: returns empty tag for attribute-only declaration
+in:
+  - 'src=image.jpg alt=test:'
+out:
+  raw: 'src=image.jpg alt=test:'
+  normalized: src=image.jpg alt=test
+  tag: ''
+  id: ''
+  classes:
+    - jpg
+  attributes:
+    - name: alt
+      value: test
+      kind: value
+      quote: null
+      range:
+        start: 14
+        end: 22
+      nameRange:
+        start: 14
+        end: 17
+      valueRange:
+        start: 18
+        end: 22
+      rawValueRange:
+        start: 18
+        end: 22
+  ranges:
+    tag: null
+    id: null
+    classes:
+      - start: 10
+        end: 13
+---
+case: keeps both selector id and inline id metadata for downstream merge logic
+in:
+  - div#first id=second class="x"
+out:
+  raw: div#first id=second class="x"
+  normalized: div#first id=second class="x"
+  tag: div
+  id: first
+  classes: []
+  attributes:
+    - name: id
+      value: second
+      kind: value
+      quote: null
+      range:
+        start: 10
+        end: 19
+      nameRange:
+        start: 10
+        end: 12
+      valueRange:
+        start: 13
+        end: 19
+      rawValueRange:
+        start: 13
+        end: 19
+    - name: class
+      value: x
+      kind: value
+      quote: '"'
+      range:
+        start: 20
+        end: 29
+      nameRange:
+        start: 20
+        end: 25
+      valueRange:
+        start: 27
+        end: 28
+      rawValueRange:
+        start: 26
+        end: 29
+  ranges:
+    tag:
+      start: 0
+      end: 3
+    id:
+      start: 4
+      end: 9
+    classes: []
+---
+suite: parseYahtmlAst
+exportName: parseYahtmlAst
+---
+case: builds text node root
+in:
+  - - plain text
+out:
+  type: root
+  children:
+    - type: text
+      value: plain text
+      path:
+        - 0
+---
+case: builds element node from string declaration
+in:
+  - - 'h1: "Title"'
+out:
+  type: root
+  children:
+    - type: element
+      path:
+        - 0
+      rawKey: h1
+      key:
+        raw: h1
+        normalized: h1
+        tag: h1
+        id: ''
+        classes: []
+        attributes: []
+        ranges:
+          tag:
+            start: 0
+            end: 2
+          id: null
+          classes: []
+      tag: h1
+      selfClosing: false
+      attributes: []
+      children:
+        - type: text
+          value: Title
+          path:
+            - 0
+            - children
+            - 0
+---
+case: builds standalone raw html node
+in:
+  - - __html: <b>raw</b>
+out:
+  type: root
+  children:
+    - type: rawHtml
+      value: <b>raw</b>
+      path:
+        - 0
+---
+case: builds doctype node
+in:
+  - - '!DOCTYPE': html5
+out:
+  type: root
+  children:
+    - type: doctype
+      value: html
+      path:
+        - 0
+      rawKey: '!DOCTYPE'
+---
+case: builds fragment node for nested root arrays
+in:
+  - - - 'span: "a"'
+      - 'span: "b"'
+out:
+  type: root
+  children:
+    - type: fragment
+      path:
+        - 0
+      children:
+        - type: element
+          path:
+            - 0
+            - 0
+          rawKey: span
+          key:
+            raw: span
+            normalized: span
+            tag: span
+            id: ''
+            classes: []
+            attributes: []
+            ranges:
+              tag:
+                start: 0
+                end: 4
+              id: null
+              classes: []
+          tag: span
+          selfClosing: false
+          attributes: []
+          children:
+            - type: text
+              value: a
+              path:
+                - 0
+                - 0
+                - children
+                - 0
+        - type: element
+          path:
+            - 0
+            - 1
+          rawKey: span
+          key:
+            raw: span
+            normalized: span
+            tag: span
+            id: ''
+            classes: []
+            attributes: []
+            ranges:
+              tag:
+                start: 0
+                end: 4
+              id: null
+              classes: []
+          tag: span
+          selfClosing: false
+          attributes: []
+          children:
+            - type: text
+              value: b
+              path:
+                - 0
+                - 1
+                - children
+                - 0
+---
+case: keeps self closing tags without children
+in:
+  - - 'img src=photo.jpg: "ignored"'
+out:
+  type: root
+  children:
+    - type: element
+      path:
+        - 0
+      rawKey: img src=photo.jpg
+      key:
+        raw: img src=photo.jpg
+        normalized: img src=photo.jpg
+        tag: img
+        id: ''
+        classes: []
+        attributes:
+          - name: src
+            value: photo.jpg
+            kind: value
+            quote: null
+            range:
+              start: 4
+              end: 17
+            nameRange:
+              start: 4
+              end: 7
+            valueRange:
+              start: 8
+              end: 17
+            rawValueRange:
+              start: 8
+              end: 17
+        ranges:
+          tag:
+            start: 0
+            end: 3
+          id: null
+          classes: []
+      tag: img
+      selfClosing: true
+      attributes:
+        - name: src
+          value: photo.jpg
+          kind: value
+          source: inline
+      children: []
+---
+case: builds object notation attributes and children
+in:
+  - - section:
+        role: main
+        hidden: true
+        children:
+          - 'p: "A"'
+out:
+  type: root
+  children:
+    - type: element
+      path:
+        - 0
+      rawKey: section
+      key:
+        raw: section
+        normalized: section
+        tag: section
+        id: ''
+        classes: []
+        attributes: []
+        ranges:
+          tag:
+            start: 0
+            end: 7
+          id: null
+          classes: []
+      tag: section
+      selfClosing: false
+      attributes:
+        - name: role
+          value: main
+          kind: value
+          source: object
+        - name: hidden
+          value: true
+          kind: boolean
+          source: object
+      children:
+        - type: element
+          path:
+            - 0
+            - children
+            - 0
+          rawKey: p
+          key:
+            raw: p
+            normalized: p
+            tag: p
+            id: ''
+            classes: []
+            attributes: []
+            ranges:
+              tag:
+                start: 0
+                end: 1
+              id: null
+              classes: []
+          tag: p
+          selfClosing: false
+          attributes: []
+          children:
+            - type: text
+              value: A
+              path:
+                - 0
+                - children
+                - 0
+                - children
+                - 0
+---
+case: merges selector and inline class attributes in ast attributes
+in:
+  - - div#home.card class="extra" data-id=1: null
+out:
+  type: root
+  children:
+    - type: element
+      path:
+        - 0
+      rawKey: div#home.card class="extra" data-id=1
+      key:
+        raw: div#home.card class="extra" data-id=1
+        normalized: div#home.card class="extra" data-id=1
+        tag: div
+        id: home
+        classes:
+          - card
+        attributes:
+          - name: class
+            value: extra
+            kind: value
+            quote: '"'
+            range:
+              start: 14
+              end: 27
+            nameRange:
+              start: 14
+              end: 19
+            valueRange:
+              start: 21
+              end: 26
+            rawValueRange:
+              start: 20
+              end: 27
+          - name: data-id
+            value: '1'
+            kind: value
+            quote: null
+            range:
+              start: 28
+              end: 37
+            nameRange:
+              start: 28
+              end: 35
+            valueRange:
+              start: 36
+              end: 37
+            rawValueRange:
+              start: 36
+              end: 37
+        ranges:
+          tag:
+            start: 0
+            end: 3
+          id:
+            start: 4
+            end: 8
+          classes:
+            - start: 9
+              end: 13
+      tag: div
+      selfClosing: false
+      attributes:
+        - name: id
+          value: home
+          source: selector
+        - name: class
+          value: card extra
+          source: selector+inline
+        - name: data-id
+          value: '1'
+          kind: value
+          source: inline
+      children: []
+---
+case: inline id attribute overrides selector id in ast attributes
+in:
+  - - div#first id=second class="x": null
+out:
+  type: root
+  children:
+    - type: element
+      path:
+        - 0
+      rawKey: div#first id=second class="x"
+      key:
+        raw: div#first id=second class="x"
+        normalized: div#first id=second class="x"
+        tag: div
+        id: first
+        classes: []
+        attributes:
+          - name: id
+            value: second
+            kind: value
+            quote: null
+            range:
+              start: 10
+              end: 19
+            nameRange:
+              start: 10
+              end: 12
+            valueRange:
+              start: 13
+              end: 19
+            rawValueRange:
+              start: 13
+              end: 19
+          - name: class
+            value: x
+            kind: value
+            quote: '"'
+            range:
+              start: 20
+              end: 29
+            nameRange:
+              start: 20
+              end: 25
+            valueRange:
+              start: 27
+              end: 28
+            rawValueRange:
+              start: 26
+              end: 29
+        ranges:
+          tag:
+            start: 0
+            end: 3
+          id:
+            start: 4
+            end: 9
+          classes: []
+      tag: div
+      selfClosing: false
+      attributes:
+        - name: class
+          value: x
+          source: selector+inline
+        - name: id
+          value: second
+          source: inline
+      children: []
+---
+case: throws for malformed selector without tag
+in:
+  - - '#id-only.class-only: "content"'
+throws: 'Malformed YAHTML element: "#id-only.class-only" - element must have a valid tag name'
+---
+case: throws for non-array root input
+in:
+  - div: x
+throws: YAHTML content must be an array. YAHTML documents always start with an array at the root level.
